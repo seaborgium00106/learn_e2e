@@ -33,11 +33,11 @@ public class PostService {
     
     /**
      * Create a new post.
-     * Invalidates post-related caches.
+     * Invalidates post-related caches and timeline caches.
      * @param request post creation request
      * @return created post response
      */
-    @CacheEvict(value = {"allPosts", "postsByUser", "searchResults"}, allEntries = true)
+    @CacheEvict(value = {"allPosts", "postsByUser", "searchResults", "userTimeline", "userTimelinePaginated", "userTimelineByDate", "userTimelineFilteredPaginated"}, allEntries = true)
     public PostResponse createPost(PostRequest request) {
         // Validate user exists
         User user = userRepository.findById(request.getUserId())
@@ -134,12 +134,12 @@ public class PostService {
     
     /**
      * Update a post.
-     * Invalidates post-related caches.
+     * Invalidates post-related caches and timeline caches.
      * @param id post ID
      * @param request post update request
      * @return updated post response
      */
-    @CacheEvict(value = {"postById", "allPosts", "paginatedPosts", "postsByUser", "searchResults"}, allEntries = true)
+    @CacheEvict(value = {"postById", "allPosts", "paginatedPosts", "postsByUser", "searchResults", "userTimeline", "userTimelinePaginated", "userTimelineByDate", "userTimelineFilteredPaginated"}, allEntries = true)
     public PostResponse updatePost(Long id, PostRequest request) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found with id: " + id));
@@ -157,10 +157,10 @@ public class PostService {
     
     /**
      * Delete a post.
-     * Invalidates all post-related caches.
+     * Invalidates all post-related caches and timeline caches.
      * @param id post ID
      */
-    @CacheEvict(value = {"postById", "allPosts", "paginatedPosts", "postsByUser", "searchResults"}, allEntries = true)
+    @CacheEvict(value = {"postById", "allPosts", "paginatedPosts", "postsByUser", "searchResults", "userTimeline", "userTimelinePaginated", "userTimelineByDate", "userTimelineFilteredPaginated"}, allEntries = true)
     public void deletePost(Long id) {
         if (!postRepository.existsById(id)) {
             throw new IllegalArgumentException("Post not found with id: " + id);

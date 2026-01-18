@@ -44,4 +44,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @return page of posts containing the text
      */
     Page<Post> findByTextContainingIgnoreCase(String text, Pageable pageable);
+    
+    /**
+     * Find all posts by multiple users (used for timeline aggregation).
+     * @param userIds list of user IDs
+     * @return list of posts by the specified users
+     */
+    List<Post> findByUserIdIn(List<Long> userIds);
 }

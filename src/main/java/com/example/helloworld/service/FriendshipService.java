@@ -31,11 +31,11 @@ public class FriendshipService {
     /**
      * Add a friendship between two users (bidirectional).
      * Creates two friendship records: user1->user2 and user2->user1
-     * Invalidates relevant caches.
+     * Invalidates relevant caches including timeline caches.
      * @param request containing userId and friendId
      * @return friendship response
      */
-    @CacheEvict(value = {"userFriends", "friendCount"}, allEntries = true)
+    @CacheEvict(value = {"userFriends", "friendCount", "userTimeline", "userTimelinePaginated", "userTimelineByDate", "userTimelineFilteredPaginated"}, allEntries = true)
     public FriendshipResponse addFriend(FriendshipRequest request) {
         Long userId = request.getUserId();
         Long friendId = request.getFriendId();
@@ -70,10 +70,10 @@ public class FriendshipService {
     /**
      * Remove a friendship between two users (bidirectional).
      * Removes both friendship records if they exist.
-     * Invalidates relevant caches.
+     * Invalidates relevant caches including timeline caches.
      * @param request containing userId and friendId
      */
-    @CacheEvict(value = {"userFriends", "friendCount"}, allEntries = true)
+    @CacheEvict(value = {"userFriends", "friendCount", "userTimeline", "userTimelinePaginated", "userTimelineByDate", "userTimelineFilteredPaginated"}, allEntries = true)
     public void removeFriend(FriendshipRequest request) {
         Long userId = request.getUserId();
         Long friendId = request.getFriendId();
